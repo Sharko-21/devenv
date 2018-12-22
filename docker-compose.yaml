@@ -1,0 +1,30 @@
+version: '2'
+
+networks:
+  main:
+
+services:
+  api:
+    image: 'game-api'
+    links:
+      - db:game.postgres
+    volumes:
+      - ~/PhpstormProjects/game/node-api:/var/www/game/
+    networks:
+      main:
+        aliases:
+        - "game"
+  db:
+    image: 'postgres:9.6'
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    ports:
+      - 5434:5432
+    networks:
+      main:
+        aliases:
+          - game.postgres
+    environment:
+      - POSTGRES_PASSWORD=password\
+      - POSTGRES_USER=admin\
+      - POSTGRES_DB=game-postgres
